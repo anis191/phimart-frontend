@@ -21,9 +21,10 @@ const AppRoutes = () => {
                 <Route path="register" element={<Register />}/>
                 {/* <Route path="dashboard" element={<Dashboard />}/> */}
                 <Route path="activate/:uid/:token" element={<ActivateAccount />}/>
-                <Route path="dashboard" element={
+            </Route>
+            <Route path="dashboard" element={
                     <PrivateRoute><Dashboard/></PrivateRoute>
-                }></Route>
+                    }>
             </Route>
         </Routes>
     );
