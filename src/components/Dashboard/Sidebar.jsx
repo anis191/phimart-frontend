@@ -11,6 +11,17 @@ import {
 import { Link } from "react-router";
 
 export default function Sidebar() {
+  const menuItems = [
+    {to:"/dashboard", icon: FiBarChart2, label: "Dashboard"},
+    {to:"/products", icon: FiPackage, label: "Products"},
+    {to:"/products/add", icon: FiPlusCircle, label: "Add Product"},
+    {to:"/categories", icon: FiTag, label: "Categories"},
+    {to:"/categories/add", icon: FiPlusCircle, label: "Add Categories"},
+    {to:"/orders", icon: FiShoppingCart, label: "Orders"},
+    {to:"/reviews", icon: FiStar, label: "Reviews"},
+    {to:"/users", icon: FiUsers, label: "Users"},
+  ]
+
   return (
     <div className="drawer-side z-10">
       <label htmlFor="drawer-toggle" className="drawer-overlay" aria-label="close sidebar"></label>
@@ -23,14 +34,9 @@ export default function Sidebar() {
 
         {/* Sidebar Menu */}
         <ul className="menu menu-md gap-2">
-          <li><Link to="/dashboard"><FiBarChart2 className="h-4 w-4" />Dashboard</Link></li>
-          <li><Link to="/products"><FiPackage className="h-4 w-4" />Products</Link></li>
-          <li><Link to="/products/add"><FiPlusCircle className="h-4 w-4" />Add Product</Link></li>
-          <li><Link to="/categories"><FiTag className="h-4 w-4" />Categories</Link></li>
-          <li><Link to="/categories/add"><FiPlusCircle className="h-4 w-4" />Add Category</Link></li>
-          <li><Link to="/orders"><FiShoppingCart className="h-4 w-4" />Orders</Link></li>
-          <li><Link to="/reviews"><FiStar className="h-4 w-4" />Reviews</Link></li>
-          <li><Link to="/users"><FiUsers className="h-4 w-4" />Users</Link></li>
+          {menuItems.map((item, idx) =>(
+            <li key={idx}><Link to={item.to}><item.icon className="h-4 w-4" />{item.label}</Link></li>
+          ))}
         </ul>
 
         {/* Footer */}

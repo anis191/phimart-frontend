@@ -17,13 +17,21 @@ const useAuth = () => {
         else setDashLoading(false)
     },[authTokens])
 
+    const handleAPIerrors = (error, defaultMessage="Something went wrong! Try again.") => {
+        if(error.response && error.response.data){
+                const error_msg = Object.values(error.response.data).flat().join("\n")
+                SetErrorMsg(error_msg)
+            }else{
+                SetErrorMsg(defaultMessage)
+        }
+    }
+
     // Fetch user profile:
     const fetchUserProfile = async () =>{
         try{
             const response = await apiClient.get('/auth/users/me', {
                 headers: {Authorization: `JWT ${authTokens?.access}`}
             })
-            // console.log(response.data)
             setUser(response.data)
         }catch(error){
             console.log(error)
@@ -38,7 +46,6 @@ const useAuth = () => {
         try{
             SetErrorMsg("")
             const response = await apiClient.post("/auth/jwt/create/", userData)
-            // console.log(response.data)
             SetAuthTokens(response.data)
             localStorage.setItem("authTokens", JSON.stringify(response.data))
             await fetchUserProfile()
@@ -51,20 +58,40 @@ const useAuth = () => {
     const registerUser = async (userData) =>{
         SetErrorMsg("")
         try{
-            // console.log("UserData from useAuth:",userData)
             await apiClient.post("/auth/users/", userData)
             return{
                 success: true
-                // message: `Registration successfull. Redirecting...`
             }
-            // console.log("Response data from useAuth:",response.data)
         }catch(error){
-            if(error.response && error.response.data){
-                const error_msg = Object.values(error.response.data).flat().join("\n")
-                SetErrorMsg(error_msg)
-            }else{
-                SetErrorMsg("Registration failed. Please try again")
-            }
+            return handleAPIerrors(error, "Registration failed! Try again.")
+        }
+    }
+
+    // Update User Profile:
+    const updateUserProfile = async (data) =>{
+        SetErrorMsg("")
+        try{
+            await apiClient.put("/auth/users/me/", data, {
+                headers: {Authorization: `JWT ${authTokens?.access}`}
+            })
+            return { success: true };
+        }catch(error){
+            handleAPIerrors(error, "Failed to update profile.");
+            return { success: false };
+        }
+    } 
+
+    // Change Password:
+    const changePassword = async(data) =>{
+        SetErrorMsg("")
+        try{
+            await apiClient.post("/auth/users/set_password/", data, {
+                headers: {Authorization: `JWT ${authTokens?.access}`}
+            })
+            return { success: true };
+        }catch(error){
+            handleAPIerrors(error, "Failed to change password.");
+            return { success: false };
         }
     }
 
@@ -76,7 +103,7 @@ const useAuth = () => {
     }
 
     return {
-        user, loginUser, errorMsg, dashLoading, registerUser, logoutUser
+        user, loginUser, errorMsg, dashLoading, registerUser, logoutUser, updateUserProfile, changePassword
     }
 };
 
