@@ -1,12 +1,14 @@
 // import React from 'react';
 import ProductItem from "../Products/ProductItem"
 import ErrorAlert from "../ErrorAlert"
+import ProductsSkeleton from "../Skeletons/ProductsSkeleton";
 
 const ProductList = ({products, loading, error}) => {
     if(loading)
         return(
             <div className="flex justify-center min-h-screen">
-                <span className="loading loading-spinner text-secondary text-xl"></span>
+                {/* <span className="loading loading-spinner text-secondary text-xl"></span> */}
+                <ProductsSkeleton />
             </div>
         )
     else if(error)

@@ -14,13 +14,14 @@ const Profile = () => {
 
     useEffect(()=>{
         Object.keys(user).forEach((key)=> setValue(key, user[key]))
-        console.log(user)
+        // console.log(user)
     },[user, setValue])
 
     const onSubmit = async (data) => {
         const profilePayload = {
             first_name: data.first_name,
             last_name: data.last_name,
+            email: data.email,
             address: data.address,
             phone_number: data.phone_number
         }

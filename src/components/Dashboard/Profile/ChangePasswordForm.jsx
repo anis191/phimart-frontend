@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 
 const ChangePasswordForm = ({ register, errors, watch, isEditing }) => {
     const[isPasswordSectionOpen, setIsPasswordSectionOpen] = useState(false)
@@ -78,7 +79,7 @@ const ChangePasswordForm = ({ register, errors, watch, isEditing }) => {
                 </label>
             </div>
         )}
-
+        <Link to="/reset_password" className="btn btn-link">Forgot Password</Link>
       </div>
     </div>)}
 </div>

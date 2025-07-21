@@ -11,6 +11,8 @@ import PrivateRoute from "../components/PrivateRoute";
 import ActivateAccount from "../components/Registration/ActivateAccount";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Profile from "../pages/Profile";
+import ResetPassword from "../pages/ResetPassword";
+import ResetPasswordConfirm from "../components/Registration/ResetPasswordConfirm";
 
 const AppRoutes = () => {
     return (
@@ -24,6 +26,8 @@ const AppRoutes = () => {
                 <Route path="register" element={<Register />}/>
                 {/* <Route path="dashboard" element={<Dashboard />}/> */}
                 <Route path="activate/:uid/:token" element={<ActivateAccount />}/>
+                <Route path="reset_password" element={<ResetPassword />}/>
+                <Route path="password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm />}/>
             </Route>
             
             {/* Private Routes */}

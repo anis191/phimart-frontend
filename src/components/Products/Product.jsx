@@ -1,5 +1,4 @@
-// import React from 'react';
-// import axios from "axios";
+
 import { useEffect, useState } from "react";
 import ProductItem from "./ProductItem";
 import { Navigation } from "swiper/modules";
@@ -10,7 +9,7 @@ import apiClient from "../../services/api-client";
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
-// import ProductsSkeleton from "../Skeletons/ProductsSkeleton";
+import ProductsSkeleton from "../Skeletons/ProductsSkeleton";
 
 const Product = () => {
     const [products, setProducts] = useState([])
@@ -36,17 +35,24 @@ const Product = () => {
                 </div>
                 {Loading && (
                     <div className="flex justify-center">
-                        <span className="loading loading-spinner text-secondary text-xl"></span>
+                        {/* <span className="loading loading-spinner text-secondary text-xl"></span> */}
+                        <ProductsSkeleton />
                     </div>
                 )}
                 {error && <ErrorAlert error_message={error}/>}
                 {!Loading && !error && products.length > 0 && (
-                    <Swiper modules={[Navigation]} spaceBetween={10} slidesPerView={1} navigation breakpoints={{
-                        640: {slidesPerView:2},
-                        1024: {slidesPerView: 3}
-                    }} className="mt-4 px-4 container">
+                    <Swiper
+                      modules={[Navigation]}
+                      navigation
+                      breakpoints={{
+                        0: { slidesPerView: 1, spaceBetween: 12 },
+                        640: { slidesPerView: 2, spaceBetween: 16 },
+                        1024: { slidesPerView: 3, spaceBetween: 20 }
+                      }}
+                      className="mt-4 px-4">
                         {products.map(product => (
-                            <SwiperSlide key={product.id} className="flex justify-center">
+                            // <SwiperSlide key={product.id} className="flex justify-center">
+                            <SwiperSlide key={product.id} className="flex justify-center py-4">
                                 <ProductItem key={product.id} product={product} />
                             </SwiperSlide>
                         ))}

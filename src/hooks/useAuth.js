@@ -27,10 +27,12 @@ const useAuth = () => {
     }
 
     // Fetch user profile:
-    const fetchUserProfile = async () =>{
+    // const fetchUserProfile = async () =>{
+    const fetchUserProfile = async (accessToken = authTokens?.access) =>{
         try{
             const response = await apiClient.get('/auth/users/me', {
-                headers: {Authorization: `JWT ${authTokens?.access}`}
+                // headers: {Authorization: `JWT ${authTokens?.access}`}
+                headers: {Authorization: `JWT ${accessToken}`}
             })
             setUser(response.data)
         }catch(error){
@@ -48,9 +50,11 @@ const useAuth = () => {
             const response = await apiClient.post("/auth/jwt/create/", userData)
             SetAuthTokens(response.data)
             localStorage.setItem("authTokens", JSON.stringify(response.data))
-            await fetchUserProfile()
+            await fetchUserProfile(response.data.access)
+            return { success: true }
         }catch(error){
             SetErrorMsg(error.response.data?.detail)
+            return { success: false }
         }
     }
 
@@ -94,6 +98,19 @@ const useAuth = () => {
             return { success: false };
         }
     }
+    
+    // Reset Password:
+    const resetPassword = async (email) =>{
+        SetErrorMsg("")
+        try{
+            console.log(email)
+            await apiClient.post("/auth/users/reset_password/", email)
+            console.log(email)
+            return { success: true };
+        }catch(error){
+            handleAPIerrors(error, "Please Try Again");
+        }
+    }
 
     // Logout User:
     const logoutUser = async () =>{
@@ -103,7 +120,7 @@ const useAuth = () => {
     }
 
     return {
-        user, loginUser, errorMsg, dashLoading, registerUser, logoutUser, updateUserProfile, changePassword
+        user, loginUser, errorMsg, dashLoading, registerUser, logoutUser, updateUserProfile, changePassword, resetPassword, handleAPIerrors
     }
 };
 

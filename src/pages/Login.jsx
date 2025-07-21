@@ -12,8 +12,11 @@ const Login = () => {
     const onSubmit = async (data) =>{
       setLoading(true)
       try{
-        await loginUser(data)
-        navigate("/dashboard")
+        
+        const response = await loginUser(data)
+        if(response?.success){
+          navigate("/dashboard")
+        }
       }catch(error){
         console.log(error)
       }finally{setLoading(false)}
@@ -72,6 +75,7 @@ const Login = () => {
           </form>
 
           <div className="text-center mt-4">
+            <Link to="/reset_password" className="btn btn-link">Forgotten your password?</Link>
             <p className="text-base-content/70">
               Don&apos;t have an account?{" "}
               <Link to="/register" className="link link-primary">

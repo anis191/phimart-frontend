@@ -2,26 +2,21 @@
 import { useEffect, useState } from "react";
 import apiClient from "../../../services/api-client"
 import CategoryItems from "./CategoryItems";
+import CategoriesSkeletons from "../../Skeletons/CategoriesSkeletons";
+import ErrorAlert from "../../ErrorAlert";
 
 const Category = () => {
+    const [Loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
     const[categories, setCategories] = useState([])
     useEffect(()=>{
+        setLoading(true)
         apiClient.get('/categories').then((res) => {
             setCategories(res.data)
         })
-        // fetchProducts()
+        .catch(err => setError(err.message))
+        .finally(() => setLoading(false))
     },[])
-
-    // const fetchProducts = async () => {
-        // try{
-            // const response = await apiClient.get('/categories')
-            // const data = await response.data
-            // setCategories(data.results)
-            // console.log(data.results)
-        // }catch(err){
-            // console.log(err)
-        // }
-    // }
 
     return (
         <section className="max-w-7xl mx-auto px-6 py-8">
@@ -30,6 +25,13 @@ const Category = () => {
                 <a href="#" className="btn btn-secondary px-6 py-5 text-md rounded-xl">View All</a>
             </div>
 
+                {Loading && (
+                    <div className="flex justify-center">
+                        {/* <span className="loading loading-spinner text-secondary text-xl"></span> */}
+                        <CategoriesSkeletons />
+                    </div>
+                )}
+                {error && <ErrorAlert error_message={error}/>}
             <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5">
                 {categories.map((categorie) => (
                     <CategoryItems key={categorie.id} index={categorie.id} category={categorie}/>

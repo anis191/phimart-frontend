@@ -1,5 +1,3 @@
-// import React from 'react';
-// import book from "../../assets/images/image-1.png"
 import banner from "../../../assets/images/banner.png"
 
 const CarouselSlide = ({title, subtitle, image}) => {
