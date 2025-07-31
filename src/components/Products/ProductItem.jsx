@@ -1,8 +1,10 @@
 // import React from 'react';
+import { Link } from "react-router";
 import defaultImage from "../../assets/images/default-image.png"
 
 const ProductItem = ({product}) => {
     return (
+      <Link to={`/shop/${product.id}/`}>
         <div className="card bg-base-100 w-full max-w-sm shadow-md">
           <figure className="h-[200px] w-full overflow-hidden flex justify-center items-center bg-white">
             <img
@@ -18,6 +20,7 @@ const ProductItem = ({product}) => {
             </div>
           </div>
         </div>
+      </Link>
     );
 };
 

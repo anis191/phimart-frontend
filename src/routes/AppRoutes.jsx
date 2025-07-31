@@ -13,6 +13,8 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Profile from "../pages/Profile";
 import ResetPassword from "../pages/ResetPassword";
 import ResetPasswordConfirm from "../components/Registration/ResetPasswordConfirm";
+import ProductDetail from "../pages/ProductDetail";
+import Cart from "../pages/Cart";
 
 const AppRoutes = () => {
     return (
@@ -20,7 +22,7 @@ const AppRoutes = () => {
         <Routes>
             <Route element={<MainLayout />}>
                 <Route path="/" element={<Home />}/>
-                <Route path="/shop" element={<Shop />}/>
+                <Route path="shop" element={<Shop />}/>
                 <Route path="about" element={<About />}/>
                 <Route path="login" element={<Login />}/>
                 <Route path="register" element={<Register />}/>
@@ -28,6 +30,7 @@ const AppRoutes = () => {
                 <Route path="activate/:uid/:token" element={<ActivateAccount />}/>
                 <Route path="reset_password" element={<ResetPassword />}/>
                 <Route path="password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm />}/>
+                <Route path="shop/:productId" element={<ProductDetail />}/>
             </Route>
             
             {/* Private Routes */}
@@ -38,6 +41,7 @@ const AppRoutes = () => {
             }>
                 <Route index element={<Dashboard />}/>
                 <Route path="profile" element={<Profile />}/>
+                <Route path="cart" element={<Cart />}/>
             </Route>
             
             {/* <Route path="dashboard" element={ */}
