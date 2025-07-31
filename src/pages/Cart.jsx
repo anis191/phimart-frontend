@@ -6,7 +6,7 @@ const Cart = () => {
     
     useEffect(()=>{
         createOrGetCart()
-    },[])
+    },[createOrGetCart])
     
     return (
         <div className="bg-red-400 p-5">

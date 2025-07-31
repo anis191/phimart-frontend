@@ -1,20 +1,14 @@
-import { useState } from "react";
-import apiClient from "../services/api-client";
+import { useCallback, useState } from "react";
+// import apiClient from "../services/api-client";
+import authApiClient from "../services/auth-api-client";
 
 const useCart = () => {
-    const getToken = () =>{
-        const token = localStorage.getItem('authTokens')
-        return token ? JSON.parse(token) : null
-    }
-    const[authTokens] = useState(getToken())
     const[cart, setCart] = useState(null)
     const[cartId, setCartId] = useState(() => localStorage.getItem('cartId'))
 
-    const createOrGetCart = async () =>{
+    const createOrGetCart = useCallback(async () =>{
         try{
-            const response = await apiClient.post("/carts/",{},{
-                headers: {Authorization: `JWT ${authTokens?.access}`}
-            })
+            const response = await authApiClient.post("/carts/")
             if (!cartId){
                 localStorage.setItem("cartId", response.data.id)
                 setCartId(response.data.id)
@@ -22,19 +16,17 @@ const useCart = () => {
             setCart(response.data)
             console.log(response.data)
         }catch(error){console.log(error)}
-    }
+    },[cartId])
 
     // Add items to the cart:
-    const addCartItems = async(data) =>{
+    const addCartItems = useCallback(async(data) =>{
         if(!cartId) await createOrGetCart();
         try{
-            const response = await apiClient.post(`/carts/${cartId}/items/`,data,{
-                headers: {Authorization: `JWT ${authTokens?.access}`}
-            })
-            // console.log("From useCart hook: ",response.data)
+            const response = await authApiClient.post(`/carts/${cartId}/items/`,data)
+            console.log("From useCart hook: ",response.data)
             return response.data
         }catch(error){console.log(error)}
-    }
+    },[cartId,createOrGetCart])
 
     return { createOrGetCart, cart, addCartItems }
 };

@@ -27,6 +27,7 @@ const AddToCartButton = ({product}) => {
       product_id : product.id,
       quantity : quantity
     }
+    console.log("Payload:", itemPayload);
     try{
       const response = await addCartItems(itemPayload)
       console.log("From AddToCartButton: ", response)
