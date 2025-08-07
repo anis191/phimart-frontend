@@ -9,19 +9,32 @@ import {
   FiUsers,
 } from "react-icons/fi";
 import { Link } from "react-router";
+import useAuthContext from "../../hooks/useAuthContext";
 
 export default function Sidebar() {
-  const menuItems = [
+  const {user} = useAuthContext()
+
+    const customerMenuItems = [
     {to:"/dashboard", icon: FiBarChart2, label: "Dashboard"},
-    {to:"/products", icon: FiPackage, label: "Products"},
+    {to:"/dashboard/cart", icon: FiShoppingCart, label: "Cart"},
+    {to:"/dashboard/orders", icon: FiShoppingCart, label: "Orders"},
+    {to:"/reviews", icon: FiStar, label: "Reviews"},
+  ]
+
+  const adminMenuItems = [
+    {to:"/dashboard", icon: FiBarChart2, label: "Dashboard"},
+    // {to:"/products", icon: FiPackage, label: "Products"},
+    {to:"/shop", icon: FiPackage, label: "Products"},
     {to:"/products/add", icon: FiPlusCircle, label: "Add Product"},
     {to:"/categories", icon: FiTag, label: "Categories"},
     {to:"/categories/add", icon: FiPlusCircle, label: "Add Categories"},
-    {to:"/orders", icon: FiShoppingCart, label: "Orders"},
+    {to:"/dashboard/cart", icon: FiShoppingCart, label: "Cart"},
+    {to:"/dashboard/orders", icon: FiShoppingCart, label: "Orders"},
     {to:"/reviews", icon: FiStar, label: "Reviews"},
     {to:"/users", icon: FiUsers, label: "Users"},
   ]
-
+  const menuItems = user.is_staff ? adminMenuItems : customerMenuItems;
+  
   return (
     <div className="drawer-side z-10">
       <label htmlFor="drawer-toggle" className="drawer-overlay" aria-label="close sidebar"></label>

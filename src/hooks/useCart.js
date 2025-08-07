@@ -48,7 +48,7 @@ const useCart = () => {
         }catch(error){console.log(error)}
     },[cartId])
 
-    return { createOrGetCart, cart, addCartItems, updateCartItemQuantity, loading, deleteCartItems }
+    return { createOrGetCart, cart, addCartItems, updateCartItemQuantity, loading, deleteCartItems, cartId, setCartId }
 };
 
 export default useCart;

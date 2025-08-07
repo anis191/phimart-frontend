@@ -115,6 +115,7 @@ const useAuth = () => {
         SetAuthTokens(null)
         setUser(null)
         localStorage.removeItem("authTokens")
+        localStorage.removeItem("cartId")
     }
 
     return {

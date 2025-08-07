@@ -4,7 +4,7 @@ import CartItemList from "../components/Cart/CartItemList";
 import CartSummary from "../components/Cart/CartSummary";
 
 const Cart = () => {
-    const {createOrGetCart, updateCartItemQuantity, cart, loading, deleteCartItems} = useCartContext()
+    const {createOrGetCart, updateCartItemQuantity, cart, loading, deleteCartItems, cartId} = useCartContext()
     const [localCart, setLocalCart] = useState(cart)
     
     useEffect(()=>{
@@ -95,7 +95,7 @@ const Cart = () => {
         <div className="container mx-auto px-4 py-8">
             <div className="grid grid-cols-1 md:grid-cols-2">
                 <div><CartItemList items={localCart.items} handleUpdateQuantity={handleUpdateQuantity} handleRemoveItem={handleRemoveItem}/></div>
-                <div><CartSummary totalPrice={localCart.total_price} itemCount={localCart.items.length}/></div>
+                <div><CartSummary totalPrice={localCart.total_price} itemCount={localCart.items.length} cartId={cartId}/></div>
             </div>
         </div>
     );

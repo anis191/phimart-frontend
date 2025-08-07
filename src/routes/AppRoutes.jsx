@@ -15,6 +15,7 @@ import ResetPassword from "../pages/ResetPassword";
 import ResetPasswordConfirm from "../components/Registration/ResetPasswordConfirm";
 import ProductDetail from "../pages/ProductDetail";
 import Cart from "../pages/Cart";
+import Order from "../pages/Order";
 
 const AppRoutes = () => {
     return (
@@ -42,6 +43,7 @@ const AppRoutes = () => {
                 <Route index element={<Dashboard />}/>
                 <Route path="profile" element={<Profile />}/>
                 <Route path="cart" element={<Cart />}/>
+                <Route path="orders" element={<Order />}/>
             </Route>
             
             {/* <Route path="dashboard" element={ */}
