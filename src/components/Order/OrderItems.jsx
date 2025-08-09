@@ -9,7 +9,7 @@ const OrderItems = ({item}) => {
           </td>
           <td className="px-4 py-3 text-right">{item.quantity}</td>
           <td className="px-4 py-3 text-right">
-            ${item.price.toFixed(2)}
+            ${item.total_price.toFixed(2)}
           </td>
         </tr>
     );
