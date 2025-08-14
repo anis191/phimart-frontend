@@ -7,7 +7,7 @@ export default function Dashboard() {
     <div>
       <main className="p-6">
         {/* Dashboard Stats */}
-          <StatCard />
+          <StatCard/>
         {/* Recent Orders Table */}
           <Order />
       </main>

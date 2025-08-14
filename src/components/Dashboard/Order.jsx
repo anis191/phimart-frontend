@@ -1,6 +1,39 @@
 // import React from 'react';
 
+import useStateDataContext from "../../hooks/useStateDataContext";
+
 const Order = () => {
+  const {recentOrders} = useStateDataContext()
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Not Paid":
+        return "badge-error";
+      case "Ready To Ship":
+        return "badge-warning";
+      case "Shipped":
+        return "badge-info";
+      case "Delivered":
+        return "badge-success";
+      case "Canceled":
+        return "badge-neutral";
+      default:
+        return "badge-ghost";
+    }
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true
+    });
+  };
+
+
     return (
         <div className="mt-6 card bg-base-100 shadow-sm">
             <div className="card-body">
@@ -17,34 +50,15 @@ const Order = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>#ORD-7245</td>
-                      <td>John Smith</td>
-                      <td><div className="badge badge-success">Completed</div></td>
-                      <td>Mar 8, 2025</td>
-                      <td>$125.00</td>
+                    {recentOrders.map((order) => (
+                    <tr key={order.id}>
+                      <td>{order.id}</td>
+                      <td>{order.user}</td>
+                      <td><div className={`badge ${getStatusColor(order.status)}`}>{order.status}</div></td>
+                      <td>{formatDate(order.created_at)}</td>
+                      <td>${order.total_price}</td>
                     </tr>
-                    <tr>
-                      <td>#ORD-7244</td>
-                      <td>Sarah Johnson</td>
-                      <td><div className="badge badge-warning">Processing</div></td>
-                      <td>Mar 7, 2025</td>
-                      <td>$89.99</td>
-                    </tr>
-                    <tr>
-                      <td>#ORD-7243</td>
-                      <td>Michael Brown</td>
-                      <td><div className="badge badge-info">Shipped</div></td>
-                      <td>Mar 7, 2025</td>
-                      <td>$245.50</td>
-                    </tr>
-                    <tr>
-                      <td>#ORD-7242</td>
-                      <td>Emily Davis</td>
-                      <td><div className="badge badge-success">Completed</div></td>
-                      <td>Mar 6, 2025</td>
-                      <td>$112.75</td>
-                    </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

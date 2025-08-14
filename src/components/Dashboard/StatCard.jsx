@@ -5,12 +5,15 @@ import {
   FiUsers,
   FiStar,
 } from "react-icons/fi";
+import useStateDataContext from "../../hooks/useStateDataContext";
 
 const StatCard = () => {
+  const {total_products,total_orders,total_users} = useStateDataContext()
+
     const stats = [
-        { icon: FiPackage, label: "Total Products", value: 245 },
-        { icon: FiShoppingCart, label: "Total Orders", value: 128 },
-        { icon: FiUsers, label: "Total Users", value: 573 },
+        { icon: FiPackage, label: "Total Products", value: total_products },
+        { icon: FiShoppingCart, label: "Total Orders", value: total_orders },
+        { icon: FiUsers, label: "Total Users", value: total_users },
         { icon: FiStar, label: "Average Rating", value: "4.8" },
     ];
 
