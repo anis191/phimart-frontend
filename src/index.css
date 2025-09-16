@@ -1,2 +1,22 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulseShop {
+  0% { transform: scaleX(0.8); opacity: 0.7; }
+  50% { transform: scaleX(1.1); opacity: 1; }
+  100% { transform: scaleX(0.8); opacity: 0.7; }
+}
+
+.shop-underline {
+  animation: pulseShop 1.5s infinite ease-in-out;
+  transform-origin: center;
+}

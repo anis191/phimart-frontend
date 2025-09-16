@@ -47,7 +47,7 @@ const Product = () => {
                       breakpoints={{
                         0: { slidesPerView: 1, spaceBetween: 12 },
                         640: { slidesPerView: 2, spaceBetween: 16 },
-                        1024: { slidesPerView: 3, spaceBetween: 20 }
+                        1024: { slidesPerView: 4, spaceBetween: 20 }
                       }}
                       className="mt-4 px-4">
                         {products.map(product => (

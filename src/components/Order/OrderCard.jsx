@@ -3,93 +3,101 @@ import useAuthContext from "../../hooks/useAuthContext";
 import OrderItemsTable from "./OrderItemsTable";
 import authApiClient from "../../services/auth-api-client";
 
-const OrderCard = ({order, onCancel}) => {
-    const {user} = useAuthContext()
-    const[currStatus, setCurrStatus] = useState(order.status)
-    const[loading, setLoading] = useState(false)
+const OrderCard = ({ order, onCancel }) => {
+  const { user } = useAuthContext();
+  const [currStatus, setCurrStatus] = useState(order.status);
+  const [loading, setLoading] = useState(false);
 
-    const handleStatusChange = async(newStatus) => {
-      const response = await authApiClient.patch(`/orders/${order.id}/update_status/`, {status : newStatus})
+  const handleStatusChange = async (newStatus) => {
+    try {
+      const response = await authApiClient.patch(`/orders/${order.id}/update_status/`, { status: newStatus });
+      if (response.status === 200) setCurrStatus(newStatus);
+    } catch (err) { console.error(err); }
+  };
 
-      if(response.status === 200){
-        setCurrStatus(newStatus)
-      }
-    }
+  const handlePayment = async () => {
+    setLoading(true);
+    try {
+      const payload = { amount: order.total_price, orderId: order.id, numItems: order.items?.length };
+      const response = await authApiClient.post("/payment/initiate/", payload);
+      if (response.data.payment_url) window.location.href = response.data.payment_url;
+      else alert("Payment Failed");
+    } catch (err) { console.error(err); }
+    setLoading(false);
+  };
 
-    const handlePayment = async() =>{
-      setLoading(true)
-      try{
-        const orderDataPayLoad = {
-          amount : order.total_price,
-          orderId : order.id,
-          numItems : order.items?.length
-        }
-        const response = await authApiClient.post("/payment/initiate/", orderDataPayLoad)
-        console.log(response)
-
-        if(response.data.payment_url){
-          setLoading(false)
-          window.location.href = response.data.payment_url
-        }else{
-          alert("Payment Failed")
-        }
-      }catch(error){console.log(error)}
-    }
+  const statusColors = {
+    "Not Paid": "bg-red-500",
+    "Ready To Ship": "bg-yellow-500",
+    "Shipped": "bg-blue-500",
+    "Delivered": "bg-green-500",
+    "Canceled": "bg-gray-400",
+  };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg mb-8 overflow-hidden">
-      <div className="bg-gray-100 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div className="bg-white rounded-2xl shadow-lg mb-8 overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-indigo-50 to-indigo-100 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-gray-200">
         <div>
-          <h2 className="text-lg font-bold">Order #{order.id}</h2>
-          <p className="text-gray-600 text-sm">Placed on {order.created_at}</p>
+          <h2 className="text-lg font-semibold text-gray-800">Order #{order.id}</h2>
+          <p className="text-gray-500 text-sm">Placed on {new Date(order.created_at).toLocaleDateString()}</p>
         </div>
-        <div className="flex gap-2">
-          { user.is_staff ? (
-            <select value={currStatus} onChange={(event)=>handleStatusChange(event.target.value)} className="px-3 py-1 rounded-full text-white text-sm font-medium bg-blue-500">
-              <option value="Not Paid">Not Paid</option>
-              <option value="Ready To Ship">Ready To Ship</option>
-              <option value="Shipped">Shipped</option>
-              <option value="Delivered">Delivered</option>
-              <option value="Canceled">Canceled</option>
+        <div className="flex gap-2 items-center">
+          {user.is_staff ? (
+            <select
+              value={currStatus}
+              onChange={(e) => handleStatusChange(e.target.value)}
+              className="px-3 py-1 rounded-full text-white text-sm font-medium bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-500 hover:to-blue-500 transition-colors"
+            >
+              <option>Not Paid</option>
+              <option>Ready To Ship</option>
+              <option>Shipped</option>
+              <option>Delivered</option>
+              <option>Canceled</option>
             </select>
           ) : (
-          <span
-            className={`px-3 py-1 rounded-full text-white text-sm font-medium ${
-              order.status === "Not Paid" ? "bg-red-500" : "bg-green-500"
-            }`}
-          >
-            {order.status}
-          </span>
+            <span
+              className={`px-3 py-1 rounded-full text-white text-sm font-medium ${statusColors[order.status]}`}
+            >
+              {order.status}
+            </span>
           )}
-          {order.status !== "Deliverd" && order.status != 'Canceled' && !user.is_staff && (
-            <button onClick={()=>onCancel(order.id)} className="text-blue-700 hover:underline">Cancel</button>
+          {!user.is_staff && order.status !== "Delivered" && order.status !== "Canceled" && (
+            <button onClick={() => onCancel(order.id)} className="text-red-600 hover:underline text-sm">
+              Cancel
+            </button>
           )}
         </div>
       </div>
-      <div className="p-6">
-        <h3 className="font-medium text-lg mb-4">Order Items</h3>
-        
-        {/* Order Items Table  */}
-        <OrderItemsTable items={order.items}/>
 
+      {/* Items Table */}
+      <div className="p-6">
+        <h3 className="font-medium text-lg mb-4 text-gray-700">Order Items</h3>
+        <OrderItemsTable items={order.items} />
       </div>
-      <div className="border-t p-6 flex flex-col items-end">
-        <div className="space-y-2 w-full max-w-[200px]">
-          <div className="flex justify-between">
+
+      {/* Total & Payment */}
+      <div className="border-t p-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <div className="space-y-2 w-full max-w-[220px]">
+          <div className="flex justify-between text-gray-600">
             <span>Subtotal:</span>
             <span>${order.total_price.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between text-gray-600">
             <span>Shipping:</span>
             <span>$0.00</span>
           </div>
-          <div className="flex justify-between font-bold border-t pt-2">
+          <div className="flex justify-between font-bold text-gray-800 border-t pt-2">
             <span>Total:</span>
             <span>${order.total_price.toFixed(2)}</span>
           </div>
         </div>
-        {(!user.is_staff && order.status === "Not Paid") && (
-          <button onClick={handlePayment} className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors" disabled={loading}>
+        {!user.is_staff && order.status === "Not Paid" && (
+          <button
+            onClick={handlePayment}
+            disabled={loading}
+            className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-500 hover:to-blue-500 text-white rounded-lg font-medium transition-all"
+          >
             {loading ? "Processing..." : "Pay Now"}
           </button>
         )}

@@ -1,51 +1,57 @@
 import useCartContext from "../../hooks/useCartContext";
 import authApiClient from "../../services/auth-api-client";
 
-const CartSummary = ({totalPrice, itemCount, cartId}) => {
-  const {createOrGetCart, setCartId} = useCartContext()
-    const shipping = itemCount === 0 || parseFloat(totalPrice) > 100 ? 0 : 10;
-    const tax = parseFloat(totalPrice) * 0.1;
-    const orderTotal = parseFloat(totalPrice) + tax + shipping
+const CartSummary = ({ totalPrice, itemCount, cartId }) => {
+  const { createOrGetCart, setCartId } = useCartContext();
 
-    const createOrder = async() =>{
-      try{
-        const response = await authApiClient.post("/orders/",{cart_id : cartId})
-        if(response.status === 201){
-          alert("Order Created Successfully!");
-          localStorage.removeItem("cartId")
-          setCartId(localStorage.getItem('cartId'))
-          await createOrGetCart(); 
-        }
-        console.log(response)
-      }catch(error){console.log(error)}
+  const shipping = itemCount === 0 || parseFloat(totalPrice) > 100 ? 0 : 10;
+  const tax = parseFloat(totalPrice) * 0.1;
+  const orderTotal = parseFloat(totalPrice) + tax + shipping;
+
+  const createOrder = async () => {
+    try {
+      const response = await authApiClient.post("/orders/", { cart_id: cartId });
+      if (response.status === 201) {
+        alert("Order Created Successfully!");
+        localStorage.removeItem("cartId");
+        setCartId(localStorage.getItem("cartId"));
+        await createOrGetCart();
+      }
+    } catch (error) {
+      console.error(error);
     }
+  };
 
   return (
-    <div className="card bg-base-100 shadow-xl">
-      <div className="card-body">
-        <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-        <div className="space-y-2">
+    <div className="card bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
+      <div className="card-body p-6">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Order Summary</h2>
+        <div className="space-y-3 text-gray-700">
           <div className="flex justify-between">
-            <span className="text-gray-500">Subtotal {itemCount} items</span>
+            <span>Subtotal ({itemCount} {itemCount > 1 ? "items" : "item"})</span>
             <span>${totalPrice.toFixed(2)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Shipping</span>
-            <span>{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
+            <span>Shipping</span>
+            <span className="text-green-600 font-medium">{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Estimated Tax</span>
+            <span>Estimated Tax</span>
             <span>${tax.toFixed(2)}</span>
           </div>
-          <div className="border-t border-gray-200 pt-2 mt-2">
-            <div className="flex justify-between font-medium">
+          <div className="border-t border-gray-200 pt-3 mt-2">
+            <div className="flex justify-between font-bold text-gray-800 text-lg">
               <span>Order Total</span>
               <span>${orderTotal.toFixed(2)}</span>
             </div>
           </div>
         </div>
-        <div className="card-actions justify-end mt-4">
-          <button onClick={createOrder} className="btn btn-primary w-full" disabled={itemCount === 0}>
+        <div className="mt-6">
+          <button
+            onClick={createOrder}
+            disabled={itemCount === 0}
+            className="w-full px-5 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-500 hover:to-blue-500 text-white font-semibold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50"
+          >
             Proceed to Checkout
           </button>
         </div>
