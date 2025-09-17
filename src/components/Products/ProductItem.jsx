@@ -1,6 +1,5 @@
-// import React from 'react';
 import { Link } from "react-router";
-import defaultImage from "../../assets/images/default-image.png"
+import defaultImage from "../../assets/images/default-image.png";
 
 const ProductItem = ({ product }) => {
   return (
@@ -14,7 +13,6 @@ const ProductItem = ({ product }) => {
             src={product.images.length > 0 ? product.images[0].image : defaultImage}
             alt={product.name}
           />
-          {/* Optional hover secondary image (if available) */}
           {product.images.length > 1 && (
             <img
               className="peer absolute top-0 -right-96 h-full w-full object-cover transition-all delay-100 duration-700 hover:right-0 peer-hover:right-0"
@@ -41,27 +39,35 @@ const ProductItem = ({ product }) => {
         </div>
 
         {/* Product Info */}
-        <div className="mt-4 px-5 pb-5">
+        <div className="mt-4 px-5 pb-5 flex flex-col gap-2">
           <h5 className="text-lg font-semibold tracking-tight text-slate-900 line-clamp-1">
             {product.name}
           </h5>
 
-          <div className="mt-2 mb-5 flex items-center justify-between">
-            <p>
-              <span className="text-2xl font-bold text-slate-900">
+          <div className="flex justify-between items-center">
+          {/* Price & After Discount */}
+          <div className="flex items-center gap-2">
+            <span className="text-2xl font-bold text-slate-900">
+              ${product.after_discount ?? product.price}
+            </span>
+            {product.after_discount && (
+              <span className="text-sm text-gray-500 line-through">
                 ${product.price}
               </span>
-              {/* Optional discount if product has old price */}
-              {product.old_price && (
-                <span className="ml-2 text-sm text-gray-500 line-through">
-                  ${product.old_price}
-                </span>
-              )}
-            </p>
+            )}
           </div>
 
+          {/* Stock Info */}
+          <p className={`mr-1.5 text-sm ${product.stock > 0 ? "text-green-600" : "text-red-500"}`}>
+            {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+          </p></div>
+
           {/* Action Button */}
-          <button className="flex w-full items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition">
+          <button
+            className={`flex w-full items-center justify-center rounded-md px-5 py-2.5 text-center text-sm font-medium text-white transition
+              ${product.stock > 0 ? "bg-slate-900 hover:bg-gray-700 focus:ring-blue-300" : "bg-gray-400 cursor-not-allowed"}`}
+            disabled={product.stock === 0}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="mr-2 h-6 w-6"
@@ -76,7 +82,7 @@ const ProductItem = ({ product }) => {
                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
               />
             </svg>
-            Buy Now
+            {product.stock > 0 ? "Buy Now" : "Out of Stock"}
           </button>
         </div>
       </div>

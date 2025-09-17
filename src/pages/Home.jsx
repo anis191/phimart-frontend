@@ -8,11 +8,10 @@ import Product from "../components/Products/Product";
 const Home = () => {
     return (
         <div>
-            {/* <CarouselSlide /> */}
             <HeroCarousel />
-            <Features />
             <Category />
             <Product />
+            <Features />
             <DiscountSection />
         </div>
     );

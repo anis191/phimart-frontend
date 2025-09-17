@@ -1,44 +1,67 @@
-// import React from 'react';
 import { useEffect, useState } from "react";
-import apiClient from "../../../services/api-client"
+import apiClient from "../../../services/api-client";
 import CategoryItems from "./CategoryItems";
 import CategoriesSkeletons from "../../Skeletons/CategoriesSkeletons";
 import ErrorAlert from "../../ErrorAlert";
 
 const Category = () => {
-    const [Loading, setLoading] = useState(false)
-    const [error, setError] = useState("")
-    const[categories, setCategories] = useState([])
-    useEffect(()=>{
-        setLoading(true)
-        apiClient.get('/categories').then((res) => {
-            setCategories(res.data)
-        })
-        .catch(err => setError(err.message))
-        .finally(() => setLoading(false))
-    },[])
+  const [Loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [categories, setCategories] = useState([]);
 
-    return (
-        <section className="max-w-7xl mx-auto px-6 py-8">
-            <div className="flex justify-between items-center px-4 md:px-8 py-5">
-                <h2 className="text-2xl md:text-3xl font-bold">Browse Categories</h2>
-                <a href="#" className="btn btn-secondary px-6 py-5 text-md rounded-xl">View All</a>
-            </div>
+  useEffect(() => {
+    setLoading(true);
+    apiClient
+      .get("/categories")
+      .then((res) => setCategories(res.data))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
 
-                {Loading && (
-                    <div className="flex justify-center">
-                        {/* <span className="loading loading-spinner text-secondary text-xl"></span> */}
-                        <CategoriesSkeletons />
-                    </div>
-                )}
-                {error && <ErrorAlert error_message={error}/>}
-            <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5">
-                {categories.map((categorie) => (
-                    <CategoryItems key={categorie.id} index={categorie.id} category={categorie}/>
-                ))}
+  return (
+    <section className="max-w-7xl mx-auto px-6 py-12">
+      <div className="text-center mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold mb-2">
+          Explore Popular Categories
+        </h2>
+        <p className="text-gray-600 text-sm md:text-base">
+          Find your preferred item in the highlighted product selection.
+        </p>
+      </div>
+
+      {Loading && (
+        <div className="flex justify-center">
+          <CategoriesSkeletons />
+        </div>
+      )}
+      {error && <ErrorAlert error_message={error} />}
+
+      {/* Desktop Smooth Scroll */}
+      <div className="hidden sm:block overflow-x-hidden relative">
+        <div
+          className="flex gap-6 whitespace-nowrap animate-scroll-x"
+          style={{ animationPlayState: "running" }}
+          onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = "paused")}
+          onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = "running")}
+        >
+          {categories.concat(categories).map((categorie, idx) => (
+            <div key={idx} className="inline-block">
+              <CategoryItems category={categorie} />
             </div>
-        </section>
-    );
+          ))}
+        </div>
+      </div>
+
+      {/* Mobile Smooth Scroll */}
+      <div className="sm:hidden overflow-x-auto scrollbar-hide">
+        <div className="flex animate-scroll-x hover:[animation-play-state:paused] gap-6">
+          {categories.concat(categories).map((categorie, idx) => (
+            <CategoryItems key={idx} category={categorie} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Category;
