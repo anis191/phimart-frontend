@@ -108,7 +108,7 @@ const Features = () => {
     };
 
     return (
-        <section className="px-4 md:px-12 py-8 bg-gray-50">
+        <section className="px-4 md:px-12 py-4 md:py-8 bg-gray-50">
             <div className="text-center justify-between mb-8">
                 <h2 className="text-2xl md:text-3xl font-bold">
                   Why Choose Us

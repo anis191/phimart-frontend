@@ -5,7 +5,9 @@ const CarouselSlide = ({ title, subtitle, image }) => {
     <section
       className="w-full flex justify-center items-center px-4 md:px-8 py-0 transition-all duration-1000 bg-cover bg-center"
       style={{ backgroundImage: `url(${banner})` }}>
+      
       <div className="flex flex-col md:flex-row items-center justify-between max-w-6xl w-full mx-auto px-2 md:px-4 bg-white/40 p-4 rounded-lg">
+        
         {/* left content */}
         <div className="w-full md:w-1/2 space-y-3 px-3 text-center md:text-left">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{title}</h1>
@@ -15,10 +17,10 @@ const CarouselSlide = ({ title, subtitle, image }) => {
           </button>
         </div>
 
-        {/* right image */}
+        {/* right image (✅ responsive height) */}
         <div className="w-full md:w-1/2 flex justify-center mt-6 md:mt-0">
           <img
-            className="w-full max-h-[250px] md:max-h-[400px] object-contain drop-shadow-lg animate-slideUp"
+            className="w-full max-h-[220px] sm:max-h-[280px] md:max-h-[400px] object-contain drop-shadow-lg animate-slideUp"
             src={image}
             alt="product-img"
           />

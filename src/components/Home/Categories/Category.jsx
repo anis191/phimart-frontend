@@ -19,7 +19,7 @@ const Category = () => {
   }, []);
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-12">
+    <section className="max-w-7xl mx-auto px-1 md:px-6 py-5 lg:py-12">
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-bold mb-2">
           Explore Popular Categories
