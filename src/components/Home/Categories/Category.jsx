@@ -54,7 +54,7 @@ const Category = () => {
 
       {/* Mobile Smooth Scroll */}
       <div className="sm:hidden overflow-x-auto scrollbar-hide">
-        <div className="flex animate-scroll-x hover:[animation-play-state:paused] gap-6">
+        <div className="flex animate-scroll-x hover:[animation-play-state:paused] gap-0">
           {categories.concat(categories).map((categorie, idx) => (
             <CategoryItems key={idx} category={categorie} />
           ))}

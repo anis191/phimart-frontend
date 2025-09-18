@@ -5,41 +5,36 @@ import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
 
-import storyteller from "../../../assets/images/storyteller-book.png";
-import shirt from "../../../assets/images/shirt-1.png";
-import laptop from "../../../assets/images/laptop-2.png";
-import anxiety from "../../../assets/images/ultimate-anxiety-free.jpg";
+import Laptop1 from "../../../assets/images/CarouselImages/Laptop1.png";
+import tShart1 from "../../../assets/images/CarouselImages/tShart1.png";
+import wirelessheadphones from "../../../assets/images/CarouselImages/wirelessheadphones.png";
+import StoryReadingCollection2 from "../../../assets/images/CarouselImages/StoryReadingCollection2.jpg";
 import CarouselSlide from './CarouselSlide';
 
 
 const HeroCarousel = () => {
   const slides = [
-    {
-      title: "Stories That Stir the Soul—A Journey Through Jodi Picoult's Worlds.Stories That Stir the Soul—A Journey Through Jodi Picoult's Worlds",
-      subtitle: "Heartfelt fiction that challenges, heals, and inspires",
-      image: storyteller,
-      bgGradient: "linear-gradient(135deg, #ffd6e0, #ffcce5, #ffe6f0, #ffd6e0)",
-    },
-    {
-      title: "Confidence in Every Stitch—Look Sharp, Feel Sharper.Stories That Stir the Soul—A Journey Through Jodi Picoult's Worlds",
-      subtitle: "Tailored comfort that moves with your day",
-      image: shirt,
-      bgGradient: "linear-gradient(135deg, #d0f0ea, #a0e0f0, #b0f0f5, #d0f0ea)",
-    },
-    {
-      title: "Power Meets Portability—Experience Performance on the Go",
-      subtitle: "Slim, stylish, and built to handle your everyday hustle.Stories That Stir the Soul—A Journey Through Jodi Picoult's Worlds",
-      image: laptop,
-      bgGradient: "linear-gradient(135deg, #fff2cc, #ffe699, #fff5cc, #fff2cc)",
-    },
-    {
-      title: "The Ultimate Anxiety-Free Life—Your Path to Inner Peace Starts Here",
-      subtitle: "Proven techniques to calm your mind and regain control.Stories That Stir the Soul—A Journey Through Jodi Picoult's WorldsStories That Stir the Soul—A Journey Through Jodi Picoult's Worlds",
-      image: anxiety,
-      bgGradient: "linear-gradient(135deg, #e0d4f7, #d0c0f0, #f0e0fa, #e0d4f7)",
-    },
-  ];
-
+  {
+    title: "Wireless Noise-Cancelling Headphones for Crystal-Clear",
+    subtitle: "Immerse yourself in premium audio with up to 30 hours of uninterrupted battery life",
+    image: wirelessheadphones
+  },
+  {
+    title: "Premium Comfort T-Shirt - Style Meets Everyday Comfort",
+    subtitle: "Soft, breathable fabric designed to keep you stylish and comfortable all day long",
+    image: tShart1
+  },
+  {
+    title: "Ultra-Slim Business Laptop for On-the-Go Productivity",
+    subtitle: "High-performance laptop with sleek design, perfect for work, travel, and multitasking",
+    image: Laptop1
+  },
+  {
+    title: "Self-Improvement Story Book - Unlock Your Best Self",
+    subtitle: "Proven techniques and inspiring stories to calm your mind, boost confidence transform your life",
+    image: StoryReadingCollection2
+  },
+];
 
   return (
     <Swiper

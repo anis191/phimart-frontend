@@ -109,8 +109,10 @@ const Features = () => {
 
     return (
         <section className="px-4 md:px-12 py-8 bg-gray-50">
-            <div className="max-w-6xl mx-auto text-center mb-6">
-                <h2 className="text-xl md:text-3xl font-bold text-gray-900">Why Choose Us</h2>
+            <div className="text-center justify-between mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold">
+                  Why Choose Us
+                </h2>
                 <p className="text-gray-600 mt-1 text-sm md:text-base">
                     Premium services designed for your convenience & peace of mind.
                 </p>
