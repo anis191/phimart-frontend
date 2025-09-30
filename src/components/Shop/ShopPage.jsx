@@ -5,15 +5,22 @@ import useFetchProducts from "../../hooks/useFetchProducts";
 import FilterSection from "./FilterSection";
 import useFetchCategories from "../../hooks/useFetchCategories";
 import { FiFilter } from "react-icons/fi";
+import { useLocation } from "react-router";
 
 const ShopPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  // const [searchQuery, setSearchQuery] = useState("");
   const [orderingQuery, setOrderingQuery] = useState("");
   const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const location = useLocation();
 
+  const queryParams = new URLSearchParams(location.search);
+  const navSearch = queryParams.get("query") || "";
+  const [searchQuery, setSearchQuery] = useState(navSearch);
+
+  console.log(searchQuery)
   const { Loading, error, products, totalPages } = useFetchProducts(
     currentPage,
     priceRange,
@@ -21,6 +28,7 @@ const ShopPage = () => {
     searchQuery,
     orderingQuery
   );
+  console.log(searchQuery)
   const { categories } = useFetchCategories();
 
   const handlePriceChange = (idx, value) => {

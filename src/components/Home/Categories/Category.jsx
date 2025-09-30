@@ -21,8 +21,8 @@ const Category = () => {
   return (
     <section className="max-w-7xl mx-auto px-1 md:px-6 py-5 lg:py-12">
       <div className="text-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold mb-2">
-          Explore Popular Categories
+        <h2 className="text-2xl md:text-3xl font-bold mb-2 flex justify-center gap-2">
+          <span className="hidden md:block">Explore</span> Popular Categories
         </h2>
         <p className="text-gray-600 text-sm md:text-base">
           Find your preferred item in the highlighted product selection.

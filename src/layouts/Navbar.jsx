@@ -1,17 +1,27 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuthContext from "../hooks/useAuthContext";
 import useCartContext from "../hooks/useCartContext";
-import { FiSearch, FiHeart, FiShoppingCart, FiMenu } from "react-icons/fi";
+import { FiSearch, FiHeart, FiShoppingCart, FiMenu, FiShoppingBag } from "react-icons/fi";
 
 const Navbar = () => {
   const { user, logoutUser } = useAuthContext();
   const { cart, createOrGetCart } = useCartContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const hideSearch = location.pathname === "/shop";
 
   useEffect(() => {
     if (user) createOrGetCart();
   }, [user, createOrGetCart]);
+
+  const searchProduct = (text) => {
+    if (!text.trim()) return;
+    navigate(`/shop?query=${encodeURIComponent(text)}`);
+  }
 
   return (
     <header className="w-full sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
@@ -23,18 +33,21 @@ const Navbar = () => {
             {/* Mobile Hamburger */}
             <button
               className="lg:hidden btn btn-ghost btn-circle"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               <FiMenu className="h-6 w-6" />
             </button>
 
             {/* Logo */}
-            <Link to="/" className="text-2xl font-bold text-blue-600 hover:text-blue-700 transition">
-              PhiMart
+            <Link to="/" className="flex items-center space-x-2 tracking-tight transition-all duration-300 hover:scale-105" style={{ fontFamily: "'Playfair Display', serif" }}>
+              <FiShoppingBag className="text-2xl sm:text-3xl text-blue-600" />
+              <span className="text-xl sm:text-2xl md:text-3xl">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-500">Phi</span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-indigo-500">Mart</span>
+              </span>
             </Link>
 
             {/* Desktop Menu */}
-            <nav className="hidden lg:flex space-x-6">
+            <nav className={`hidden lg:flex space-x-6 ${hideSearch ? "ml-32" : ""}`}>
               <Link to="/" className="text-gray-700 font-medium hover:text-blue-600 transition">Home</Link>
               <div className="relative group">
                 <span className="text-gray-700 font-medium cursor-pointer hover:text-blue-600 transition">
@@ -62,16 +75,45 @@ const Navbar = () => {
           </div>
 
           {/* Center: Search */}
-          <div className="flex-grow mx-4 hidden md:flex">
-            <div className="w-full relative">
-              <input
-                type="text"
-                placeholder="Search for products..."
-                className="w-full border border-gray-300 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <FiSearch className="absolute left-3 top-2.5 text-gray-400" />
-            </div>
-          </div>
+          {/* {!hideSearch && ( */}
+          {/* // <div className="flex-grow mx-4 hidden md:flex"> */}
+            {/* <div className="w-full relative"> */}
+              {/* Input Field */}
+              {/* <input onChange={(e)=>setSearchQuery(e.target.value)} type="text" placeholder="Search for products..." */}
+                {/* // className="w-full border border-gray-300 rounded-full py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow shadow-sm hover:shadow-md"/> */}
+              {/* Clickable Search Icon */}
+              {/* <button onClick={()=>searchProduct(searchQuery)} type="submit" */}
+                {/* // className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-600 cursor-pointer"> */}
+                {/* <FiSearch className="h-5 w-5" /> */}
+              {/* </button> */}
+            {/* </div> */}
+          {/* </div> )} */}
+          {/* Center: Search */}
+{!hideSearch && (
+  <div className="flex-grow mx-4 hidden md:flex">
+    <div className="w-full relative">
+      {/* Input Field */}
+      <input
+        type="text"
+        placeholder="Search for products..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") searchProduct(searchQuery);
+        }}
+        className="w-full border border-gray-300 rounded-full py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow shadow-sm hover:shadow-md"
+      />
+      {/* Clickable Search Icon */}
+      <button
+        onClick={() => searchProduct(searchQuery)}
+        type="submit"
+        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-600 cursor-pointer"
+      >
+        <FiSearch className="h-5 w-5" />
+      </button>
+    </div>
+  </div>
+)}
 
           {/* Right: Wishlist / Cart / Profile */}
           <div className="flex items-center space-x-3">
@@ -79,7 +121,7 @@ const Navbar = () => {
               <>
                 {/* Wishlist */}
                 <div className="relative hidden sm:block">
-                  <Link to="/dashboard/wishlist" className="btn btn-ghost btn-circle relative">
+                  <Link to="#" className="btn btn-ghost btn-circle relative">
                     <FiHeart className="h-6 w-6 text-gray-700 hover:text-red-500 transition" />
                     {cart?.wishlist?.length > 0 && (
                       <span className="absolute -top-1 -right-1 w-4 h-4 text-xs flex items-center justify-center bg-red-500 text-white rounded-full">
@@ -102,19 +144,36 @@ const Navbar = () => {
                 </div>
 
                 {/* Profile */}
-                <div className="dropdown dropdown-end">
-                  <div tabIndex={0} className="btn btn-ghost btn-circle avatar placeholder">
-                    <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center">
-                      <span className="text-sm">{user.email?.[0].toUpperCase() || "U"}</span>
+                <div className="dropdown dropdown-end cursor-pointer">
+                  <div tabIndex={0} className="relative">
+                    {/* Circle Avatar */}
+                    <div className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg">
+                      <span className="text-sm font-semibold leading-none">
+                        {user.email?.[0].toUpperCase() || "U"}
+                      </span>
                     </div>
                   </div>
-                  <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-white rounded-box w-52">
-                    <li className="border-b border-gray-100 px-2 py-1">{user.email}</li>
-                    <li><Link to="/dashboard">Dashboard</Link></li>
-                    <li><Link to="/dashboard/orders">Orders</Link></li>
-                    <li><Link to="/dashboard/wishlist">Wishlist</Link></li>
-                    <li><Link to="/dashboard/settings">Settings</Link></li>
-                    <li><button onClick={logoutUser}>Logout</button></li>
+
+                  {/* Dropdown */}
+                  <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 p-2 shadow-lg bg-white rounded-box w-52 border border-gray-100">
+                    <li className="border-b border-gray-100 px-2 py-1 font-medium">
+                      {user.email}
+                    </li>
+                    <li>
+                      <Link to="/dashboard">Dashboard</Link>
+                    </li>
+                    <li>
+                      <Link to="/dashboard/orders">Orders</Link>
+                    </li>
+                    <li>
+                      <Link to="/dashboard/wishlist">Wishlist</Link>
+                    </li>
+                    <li>
+                      <Link to="/dashboard/settings">Settings</Link>
+                    </li>
+                    <li>
+                      <button onClick={logoutUser}>Logout</button>
+                    </li>
                   </ul>
                 </div>
               </>
