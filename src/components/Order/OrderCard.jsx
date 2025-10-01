@@ -47,7 +47,14 @@ const OrderCard = ({ order, onCancel }) => {
             <select
               value={currStatus}
               onChange={(e) => handleStatusChange(e.target.value)}
-              className="px-3 py-1 rounded-full text-white text-sm font-medium bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-indigo-500 hover:to-blue-500 transition-colors"
+              className={`px-3 py-1 rounded-full text-white text-sm font-medium transition-colors ${
+                currStatus === "Not Paid" ? "bg-red-500 hover:bg-red-600" :
+                currStatus === "Ready To Ship" ? "bg-yellow-500 hover:bg-yellow-600" :
+                currStatus === "Shipped" ? "bg-blue-500 hover:bg-blue-600" :
+                currStatus === "Delivered" ? "bg-green-500 hover:bg-green-600" :
+                currStatus === "Canceled" ? "bg-gray-400 hover:bg-gray-500" :
+                "bg-blue-500"
+              }`}
             >
               <option>Not Paid</option>
               <option>Ready To Ship</option>

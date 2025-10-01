@@ -74,46 +74,31 @@ const Navbar = () => {
             </nav>
           </div>
 
-          {/* Center: Search */}
-          {/* {!hideSearch && ( */}
-          {/* // <div className="flex-grow mx-4 hidden md:flex"> */}
-            {/* <div className="w-full relative"> */}
-              {/* Input Field */}
-              {/* <input onChange={(e)=>setSearchQuery(e.target.value)} type="text" placeholder="Search for products..." */}
-                {/* // className="w-full border border-gray-300 rounded-full py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow shadow-sm hover:shadow-md"/> */}
-              {/* Clickable Search Icon */}
-              {/* <button onClick={()=>searchProduct(searchQuery)} type="submit" */}
-                {/* // className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-600 cursor-pointer"> */}
-                {/* <FiSearch className="h-5 w-5" /> */}
-              {/* </button> */}
-            {/* </div> */}
-          {/* </div> )} */}
-          {/* Center: Search */}
-{!hideSearch && (
-  <div className="flex-grow mx-4 hidden md:flex">
-    <div className="w-full relative">
-      {/* Input Field */}
-      <input
-        type="text"
-        placeholder="Search for products..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") searchProduct(searchQuery);
-        }}
-        className="w-full border border-gray-300 rounded-full py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow shadow-sm hover:shadow-md"
-      />
-      {/* Clickable Search Icon */}
-      <button
-        onClick={() => searchProduct(searchQuery)}
-        type="submit"
-        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-600 cursor-pointer"
-      >
-        <FiSearch className="h-5 w-5" />
-      </button>
-    </div>
-  </div>
-)}
+          {!hideSearch && (
+            <div className="flex-grow mx-4 hidden md:flex">
+              <div className="w-full relative">
+                {/* Input Field */}
+                <input
+                  type="text"
+                  placeholder="Search for products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") searchProduct(searchQuery);
+                  }}
+                  className="w-full border border-gray-300 rounded-full py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow shadow-sm hover:shadow-md"
+                />
+                {/* Clickable Search Icon */}
+                <button
+                  onClick={() => searchProduct(searchQuery)}
+                  type="submit"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-600 cursor-pointer"
+                >
+                  <FiSearch className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Right: Wishlist / Cart / Profile */}
           <div className="flex items-center space-x-3">
@@ -166,10 +151,10 @@ const Navbar = () => {
                       <Link to="/dashboard/orders">Orders</Link>
                     </li>
                     <li>
-                      <Link to="/dashboard/wishlist">Wishlist</Link>
+                      <Link to="#">Wishlist</Link>
                     </li>
                     <li>
-                      <Link to="/dashboard/settings">Settings</Link>
+                      <Link to="#">Settings</Link>
                     </li>
                     <li>
                       <button onClick={logoutUser}>Logout</button>

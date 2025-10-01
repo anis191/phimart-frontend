@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useCartContext from "../hooks/useCartContext";
 import CartItemList from "../components/Cart/CartItemList";
 import CartSummary from "../components/Cart/CartSummary";
+import CartSkeleton from "../components/Skeletons/CartSkeleton";
 
 const Cart = () => {
     const {createOrGetCart, updateCartItemQuantity, cart, loading, deleteCartItems, cartId} = useCartContext()
@@ -14,26 +15,6 @@ const Cart = () => {
     useEffect(()=>{
         setLocalCart(cart)
     },[cart])
-    
-    // const handleUpdateQuantity = async(itemId, quantity) => {
-        // const prevLocalCartCopy = localCart // store a capy of localCart
-// 
-        // setLocalCart((prevLocalCart) => (
-            // {... prevLocalCart, items: prevLocalCart.items.map((item)=> item.id === itemId ? {
-                // ... item, quantity: quantity, total_price: item.product.price * quantity,
-            // } : item),
-            // total_price: prevLocalCart.items.reduce(
-                // (sum, item) => sum + item.total_price, 0
-            // )
-            // }
-        // ))
-        // try{
-            // await updateCartItemQuantity(itemId, quantity)
-        // }catch(error){
-            // console.log(error)
-            // setLocalCart(prevLocalCartCopy)
-        // }
-    // }
 
     const handleUpdateQuantity = async(itemId, quantity) => {
         const prevLocalCartCopy = localCart // store a capy of localCart
@@ -62,17 +43,6 @@ const Cart = () => {
         }
     }
 
-    // const handleRemoveItem = async(itemId) =>{
-        // setLocalCart((prevLocalCart)=>({
-            // ... prevLocalCart, 
-            // items: prevLocalCart.items.filter((item) => item.id !== itemId),
-        // }))
-// 
-        // try{
-            // await deleteCartItems(itemId)
-        // }catch(error){console.log(error)}
-    // }
-
     const handleRemoveItem = async(itemId) =>{
         setLocalCart((prevLocalCart) => {
             const updatedItems = prevLocalCart.items.filter((item) => item.id !== itemId)
@@ -88,7 +58,9 @@ const Cart = () => {
         }catch(error){console.log(error)}
     }
 
-    if(loading) return <p className="text-blue-500 text-center p-5 font-bold">Loading....</p>
+    if(loading) return <p className="text-blue-500 text-center p-5 font-bold">
+        <CartSkeleton />
+    </p>
     if(!localCart) return <p className="text-blue-500 text-center p-5 font-bold">No cart found</p>
 
     return (

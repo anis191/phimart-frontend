@@ -10,7 +10,7 @@ export default function Sidebar() {
     { to: "/dashboard", icon: FiBarChart2, label: "Dashboard" },
     { to: "/dashboard/cart", icon: FiShoppingCart, label: "Cart" },
     { to: "/dashboard/orders", icon: FiShoppingCart, label: "Orders" },
-    { to: "/reviews", icon: FiStar, label: "Reviews" },
+    { to: "#", icon: FiStar, label: "Reviews" },
   ];
 
   const adminMenuItems = [
@@ -21,7 +21,7 @@ export default function Sidebar() {
     { to: "/categories/add", icon: FiPlusCircle, label: "Add Categories" },
     { to: "/dashboard/cart", icon: FiShoppingCart, label: "Cart" },
     { to: "/dashboard/orders", icon: FiShoppingCart, label: "Orders" },
-    { to: "/reviews", icon: FiStar, label: "Reviews" },
+    { to: "#", icon: FiStar, label: "Reviews" },
     { to: "/users", icon: FiUsers, label: "Users" },
   ];
 
